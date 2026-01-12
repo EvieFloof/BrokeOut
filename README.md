@@ -22,22 +22,6 @@
 **BrokeOut** is a modern twist on the classic breakout arcade game, where your mission is simple:  
 💥 **Destroy everything in sight!**
 
-Combining nostalgic gameplay with modern roguelike elements, BrokeOut offers a fresh take on a beloved genre.  
-Break bricks, collect power-ups, and watch the chaos unfold through increasingly challenging levels.
-
-> ⚡ Fast-paced, visually appealing, and endlessly replayable — this isn’t your typical breakout game.
->
-> (Eeew, currently there's nothing of this, just a menu and a normal breakout game xwx)
-
----
-
-## ✨ Features
-
-- 🎯 **Classic Breakout Gameplay** — Paddle, ball, bricks. You know the drill!
-- 🎨 **Modern Visual Design** — Clean, attractive graphics that pop
-- ⚡ **Fast-Paced Action** — Quick rounds perfect for short gaming sessions  
-- 🔧 **Built with Python** — Open source and easy to understand
-
 ---
 
 ## 🚀 Installation
@@ -75,8 +59,6 @@ uv run main.py
 ## 📸 Screenshots
 
 <div align="center">
-
-**Who said a breakout game can't be sexy?**
 
 <img width="810" height="607" alt="image" src="https://github.com/user-attachments/assets/cf7ad36b-1425-4061-9ca7-7d603d3a1ead" />
 <p><i>Menu screen</i></p>
