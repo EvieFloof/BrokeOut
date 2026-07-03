@@ -74,10 +74,10 @@ uv run main.py
 
 | Name                                               | Role                 |
 |----------------------------------------------------|----------------------|
-| [@NowEwo](https://github.com/NowEwo)               | Lead Developer       |
+| [@EvieFloof](https://github.com/EvieFloof)               | Lead Developer       |
 | [@titwix](https://github.com/titwix)               | Developer            |
 | Eliot Hartel                                       | Developer            |
-| [@yamikocrystal](https://github.com/yamikocrystal) | The cute fox drawing |
+| [@yamikocrystal](https://github.com/yamikocrystal) | The Cute Fox Drawing |
 
 ---
 
@@ -85,22 +85,22 @@ uv run main.py
 
 <details>
 <summary><b>What's the current state of the game ?</b></summary>
-Currently in a very barebone phase! The core mechanics work, but we're still adding features and polishing gameplay.
+The core mechanics works well, we now need to add the actual ne wgameplay features to the game
 </details>
 
 <details>
 <summary><b>Why did you create this ?</b></summary>
-BrokeOut started as a school project. It grew into something we found genuinely fun — and we’re excited to keep developing it!
+BrokeOut started as a school project. It grew into something we found genuinely fun and we’re excited to keep developing it
 </details>
 
 <details>
 <summary><b>Can I contribute to the project ?</b></summary>
-Not yet — it’s currently a school project. Once finished, we plan to open it up for community contributions!
+Absolutely, we would be really grateful if you contributed to the project
 </details>
 
 <details>
 <summary><b>What platforms does it support ?</b></summary>
-Built with Python, BrokeOut runs on Windows, macOS, and Linux.
+Built with Python, BrokeOut runs on Windows, MacOS, and Linux.
 </details>
 
 <details>
@@ -110,7 +110,7 @@ Absolutely! BrokeOut is and always will be **free and open source**.
 
 <details>
 <summary><b>Will there be a mobile version ?</b></summary>
-We’re focusing on desktop for now — but mobile could be interesting in the future!
+We’re focusing on desktop for now, but mobile could be interesting in the future!
 </details>
 
 <details>
@@ -125,8 +125,8 @@ Because Python's an interpreted language, it has its own limitation such as perf
 We’d love to hear from you!
 Whether you found a bug, have an idea, or just want to say hi:
 
-* 📧 **Email:** [contactme@cutefox.dev](mailto:contactme@cutefox.dev)
-* 🐛 **Report bugs:** [GitHub Issues](https://www.github.com/NowEwo/BrokeOut/issues)
+* 📧 **Email:** [evie.with.foxes@gmail.com](mailto:evie.with.foxes+brokeoutinqueries@gmail.com)
+* 🐛 **Report bugs:** [GitHub Issues](https://www.github.com/EvieFloof/BrokeOut/issues)
 * ⭐ **Like the project?** Give it a star on GitHub!
 
 ---
@@ -152,4 +152,3 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 ⬆ [Back to Top](#readme)
 
 </div>
-
