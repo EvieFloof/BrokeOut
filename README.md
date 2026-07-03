@@ -10,7 +10,6 @@
     <a href="#-features">Features</a> • 
     <a href="#-installation">Installation</a> • 
     <a href="#-screenshots">Screenshots</a> • 
-    <a href="#-roadmap">Roadmap</a> • 
     <a href="#-faq">FAQ</a>
   </p>
 </div>
