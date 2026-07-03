@@ -107,7 +107,7 @@ class LevelScene(Scene):
                 (center[0] + 77, center[1] + 53),
                 [151, 51],
                 "Main Menu",
-                lambda: self.game.scene_manager.set_active_scene("menu"),
+                self.MenuButton,
             ),
             "Quit Desktop": button.Button(
                 (center[0], center[1] + 106),
@@ -125,6 +125,10 @@ class LevelScene(Scene):
         )
 
         self.game.audio_engine.play_sound("level_theme_0", True)
+
+    def MenuButton(self) -> None:
+        self.game.audio_engine.set_lowpass(50_000)
+        self.game.scene_manager.set_active_scene("menu")
 
     def background_color(self) -> list:
         return [c // 3 for c in self.color]
@@ -200,6 +204,8 @@ class LevelScene(Scene):
 
     def KeyDown(self, event: pygame.Event) -> None:
         if event.key == pygame.K_ESCAPE:
+            if self.game.config.debug.game.exit_on_escape:
+                self.game.running = False
             self.toggle_pause()
         if event.key == pygame.K_SPACE:
             self.trigger_next_level()

@@ -53,6 +53,7 @@ debug:
     infinite_lives: false
     autostart: false
     autoplay: false
+    exit_on_escape: false
 
   misc:
     error_handler: false
@@ -70,6 +71,6 @@ engine:
   log_level: 4
 
 release:
-  version: "0.1.8-1"
+  version: "0.1.8-2"
   state: "EDGE"
-  compliant_name: "Winter Update"
+  compliant_name: "Summer Fixes"

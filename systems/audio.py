@@ -143,7 +143,7 @@ class AudioEngine:
     AudioEngine - Moteur audio de BrokeEngine (version sans Pedalboard)
     """
 
-    def __init__(self, sample_rate=44100, block_size=512):
+    def __init__(self, sample_rate=48000, block_size=512):
         self.logger = Logger("systems.audio")
 
         self.sample_rate = sample_rate
@@ -164,6 +164,8 @@ class AudioEngine:
 
         self.audio_thread = None
         self.running = False
+
+        self.threads = {}
 
     def load_sound(self, name: str, filepath: str):
         try:
@@ -285,7 +287,7 @@ class AudioEngine:
                 self.effects.reverb = start + (target - start) * t
                 threading.Event().wait(duration / steps)
 
-        threading.Thread(target=_fade, daemon=True).start()
+        self.threads["Reverb"] = threading.Thread(target=_fade, daemon=True).start()
 
     def fade_lowpass(self, target: float, duration: float):
         def _fade():
@@ -296,4 +298,4 @@ class AudioEngine:
                 self.effects.lowpass = start + (target - start) * t
                 threading.Event().wait(duration / steps)
 
-        threading.Thread(target=_fade, daemon=True).start()
+        self.threads["Lowpass"] = threading.Thread(target=_fade, daemon=True).start()

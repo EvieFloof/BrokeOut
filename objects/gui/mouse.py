@@ -27,4 +27,4 @@ class Mouse(prototype.Entity):
                     (0, mousey, self.game.config.graphics.render.width, 1),
                 )
 
-            self.game.window.blit(self.cursor, (mousex + 8, mousey + 8 * self.i))
+            self.game.window.blit(self.cursor, (mousex, mousey * self.i))

@@ -125,7 +125,7 @@ class MenuScene(Scene):
 
     def PlayButtonClick(self) -> None:
         if not self.credits:
-            self.game.scene_manager.set_active_scene("level")
+            self.game.scene_manager.set_active_scene("level", False)
 
     def CreditsButtonClick(self) -> None:
         self.scroll = 0

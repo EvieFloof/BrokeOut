@@ -37,6 +37,13 @@ class Renderer(Context):
         self.update_values: bool = True
         self.last_warp: float = 0.0
 
+        self.game.event_manager.subscribe(self, "KeyDown")
+    
+    def KeyDown(self, event: pygame.Event):
+        if event.key == pygame.K_f:
+            self.game.isFullscreen = not self.game.isFullscreen
+            self.game.set_pygame_window_mode(self.game.isFullscreen)
+
     def change_shader(self, shader_name: str) -> None:
         """
         change_shader - Changer le shader utilisé par le moteur de rendu

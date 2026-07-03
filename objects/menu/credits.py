@@ -9,47 +9,55 @@ class Credits(Entity):
         super().__init__()
         self.font = pygame.freetype.Font("assets/fonts/Monocraft.ttf", 19)
         self.text: list[str] = [
-            "Broke Out - By Broke Team (2025)",
+            "Broke Out • By Broke Team (2026)",
             f"Version {self.game.config.release.version} ({self.game.config.release.state})",
             "",
-            "***Development Team***",
-            "Ewo",
+            ">>> Development Team <<<",
+            "Lead Developer: Evie",
             "Titouan Brebion-Coïa",
             "Eliot Hartel",
             "",
-            "***Music***",
-            "Ewo on FL Studio",
+            ">>> Music <<<",
+            "Menu Audio: Evie",
+            "Level Audio: Evie",
+            "Splash Screen SFX: Nintendo",
             "",
-            "***Design***",
-            "Logo : Ewo",
-            "Color palette : Titouan Brebion-Coïa, Eliot Hartel",
-            "Easter egg fox : YamikoCrystalYC",
+            ">>> Design <<<",
+            "Graphic Design: Evie",
+            "Color palette: Titouan Brebion-Coïa, Eliot Hartel",
+            "Easter-egg Fox: YamikoCrystalYC",
             "",
-            "***Gameplay***",
+            ">>> Gameplay <<<",
             "Titouan Brebion-Coïa",
             "Eliot Hartel",
             "",
-            "***Special thanks to***",
+            ">>> Special thanks to <<<",
             "Cantine, Rémi, Sube, Python, UV, Pygame",
             "And that random guy's website solving a bug in a magic way",
-            "Made with love by Broke Team",
-            "<3",
+            "Made with love by Broke Team <3"
         ]
         self.scroll: int = 0
+        self.scroll_target: int = 0
 
         self.game.event_manager.subscribe(self, "MouseWheel")
 
     def MouseWheel(self, event) -> None:
-        self.scroll += event.y * 25
+        # self.scroll += event.y * 25
+        self.scroll_target += event.y * 30
 
     def update(self) -> None:
-        target_min = -200 if not self.scene.egg else -1
+        target_min = -230 if not self.scene.egg else -1
         target_max = -25
 
-        if self.scroll < target_min:
-            self.scroll += (target_min - self.scroll) * 0.1
-        elif self.scroll > target_max:
-            self.scroll += (target_max - self.scroll) * 0.1
+        if (self.scroll_target == self.scroll):
+            pass
+        else:
+            self.scroll += (self.scroll_target - self.scroll) * 0.15
+
+            if self.scroll_target < target_min:
+                self.scroll_target += (target_min - self.scroll_target) * 0.3
+            elif self.scroll_target > target_max:
+                self.scroll_target += (target_max - self.scroll_target) * 0.3
 
     # noinspection PyMethodOverriding
     def draw(self, scene) -> None:

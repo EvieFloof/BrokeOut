@@ -26,6 +26,13 @@ class SplashScene(Scene):
 
         self.game.audio_engine.load_sound("splash_sound", "sfx/splash.wav")
 
+    def run(self) -> None:
+        self.game.event_manager.subscribe(self, "KeyDown")
+
+    def KeyDown(self, event: pygame.Event) -> None:
+        if event.key == pygame.K_SPACE:
+            self.game.scene_manager.set_active_scene("menu")
+
     def update(self) -> None:
         if self.text_opacity < 255 and self.animation_state:
             self.text_opacity += (255 - self.text_opacity) * 0.1
@@ -38,7 +45,7 @@ class SplashScene(Scene):
         elif self._get_ticks() == 120:
             self.text = "Powered by BrokeEngine"
         elif self._get_ticks() == 180:
-            self.text = "© • 2025-2026"
+            self.text = "© 2025-2026"
         elif self._get_ticks() == 230:
             self.text_opacity = 0
         elif self._get_ticks() == 270:

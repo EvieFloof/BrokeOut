@@ -39,12 +39,9 @@ class Player(Entity, GameContext):
 
     def update(self) -> None:
         x = pygame.mouse.get_pos()[0] if not self.autoplay else self.scene.ball.pos[0]
-        if x - self.width / 2 < self.scene.bounds["x_min"]:
-            self.pos[0] = self.scene.bounds["x_min"] + self.width / 2
-        elif x + self.width / 2 > self.scene.bounds["x_max"]:
-            self.pos[0] = self.scene.bounds["x_max"] - self.width / 2
-        else:
-            self.pos[0] = x
+        x = max(x, self.scene.bounds["x_min"] + self.width / 2)
+        x = min(x, self.scene.bounds["x_max"] - self.width / 2)
+        self.pos[0] += (x - self.pos[0]) * 0.25
 
         if self.width > self.base_width:
             self.width = self.width - 0.1

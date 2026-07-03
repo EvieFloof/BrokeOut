@@ -38,6 +38,8 @@ class Game:
 
         self.running = True
 
+        self.isFullscreen = False
+
     def handle_events(self) -> bool:
         """
         handle_event - Envoyer les évènements au gestionnaire d'évènements
@@ -59,13 +61,6 @@ class Game:
         pygame.display.set_caption(new_title)
         return new_title
 
-    def Quit(self) -> None:
-        """
-        Quit - fonction d'évènements permettant de fermer le jeu lors de l'évènement Quit de PyGame
-        """
-
-        self.running = False
-
     def update(self) -> None:
         """
         update - Connecteur de la fonction update du scene_manager
@@ -79,22 +74,29 @@ class Game:
         """
 
         self.scene_manager.draw()
+    
+    def set_pygame_window_mode(self, fullscreen: bool = False) -> None:
+        if fullscreen:
+            self.window = pygame.display.set_mode(
+                (self.config.graphics.window.width, self.config.graphics.window.height),
+                pygame.OPENGL | pygame.DOUBLEBUF | pygame.FULLSCREEN,
+            )
+        else:
+            self.window = pygame.display.set_mode(
+                (self.config.graphics.window.width, self.config.graphics.window.height),
+                pygame.OPENGL | pygame.DOUBLEBUF,
+            )
 
     def run(self) -> int:
         """
         run - Fonction d'exécution du moteur de jeu
         """
 
-        self.event_manager.subscribe(self, "Quit")
-
         self.logger.log("Initialising Pygame window")
         pygame.init()
         self.audio_engine.start()
 
-        self.window = pygame.display.set_mode(
-            (self.config.graphics.window.width, self.config.graphics.window.height),
-            pygame.OPENGL | pygame.DOUBLEBUF,
-        )
+        self.set_pygame_window_mode(self.isFullscreen)
 
         self.update_window_title()
 
