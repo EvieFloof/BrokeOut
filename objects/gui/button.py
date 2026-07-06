@@ -8,7 +8,7 @@ from objects import prototype
 
 class Button(prototype.Entity):
     def __init__(
-        self, pos: tuple | list, size: tuple | list, text: str, onclick = None
+        self, pos: tuple | list, size: tuple | list, text: str, onclick = None, disabled: bool = False
     ) -> None:
         super().__init__()
 
@@ -16,6 +16,8 @@ class Button(prototype.Entity):
         self.size: list = size
         self.text: str = text
         self.pos: list = pos
+
+        self.disabled: bool = disabled
 
         self.onclick = onclick
 
@@ -56,7 +58,7 @@ class Button(prototype.Entity):
                 bg_color[0],
                 bg_color[1],
                 bg_color[2],
-                93 if button.collidepoint(mouse) else 51,
+                93 if (button.collidepoint(mouse) and not self.disabled) else 51,
             ),
             button,
             border_radius=3,
@@ -64,7 +66,7 @@ class Button(prototype.Entity):
         for i in range(1, 3):
             pygame.draw.rect(
                 surface,
-                fg_color,
+                fg_color if not self.disabled else (fg_color[0] // 2, fg_color[1] // 2, fg_color[2] // 2,),
                 (
                     self.pos[0] - (self.size[0] // 2) + 3 - i,
                     self.pos[1] - (self.size[1] // 2) + 3 - i,
@@ -75,5 +77,5 @@ class Button(prototype.Entity):
                 border_radius=2,
             )
         self.font.render_to(
-            surface, self.text_rect, self.text, [c for c in fg_color], size=21
+            surface, self.text_rect, self.text, fg_color if not self.disabled else (fg_color[0] // 2, fg_color[1] // 2, fg_color[2] // 2,), size=21
         )

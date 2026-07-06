@@ -24,8 +24,20 @@ class StatsElement(prototype.Entity):
             self.displayed_score -= max(1, diff)
 
     def draw(self):
-        score_text = f"SCORE: {self.displayed_score} | LIFES: {self.scene.lives}"
+        score_text = f"{self.displayed_score}"
         self.font.render_to(self.game.window, (31, 13), score_text, self.scene.color)
+        score_text = f"♥x{self.scene.lives}"
+        self.font.render_to(
+            self.game.window,
+            (
+                self.game.config.graphics.render.width
+                - (len(str(score_text))) * 15
+                - 61,
+                13,
+            ),
+            score_text,
+            self.scene.color,
+        )
 
 
 class ProgressBar(prototype.Entity):

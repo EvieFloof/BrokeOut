@@ -1,21 +1,20 @@
 """
 audio - Moteur audio de BrokeEngine
 
-EwoFluffy - Team Broke - 2025
+EwoFluffy - BrokeTeam - 2025
 """
 
-from queue import Queue
 import threading
-
+import wave
 from dataclasses import dataclass
+from queue import Queue
 from typing import Dict
 
-import sounddevice as sd
 import numpy as np
-import wave
+import sounddevice as sd
 
-from systems.logging import Logger
 from systems.config import config
+from systems.logging import Logger
 
 
 class Reverb:
@@ -112,7 +111,7 @@ class Lowpass:
         self.prev = np.zeros(2, dtype=np.float32)
 
     def process(self, stereo: np.ndarray, cutoff: float):
-        if cutoff >= 20000.0: # 20 KHz, inutile d'appliquer l'effet
+        if cutoff >= 20000.0:  # 20 KHz, inutile d'appliquer l'effet
             return stereo
 
         rc = 1.0 / (2 * np.pi * cutoff)
@@ -122,7 +121,7 @@ class Lowpass:
 
         for i in range(stereo.shape[1]):
             self.prev = self.prev + alpha * (stereo[:, i] - self.prev)
-            out[:, i] = self.prev # Toutes les lignes, colone i
+            out[:, i] = self.prev  # Toutes les lignes, colone i
 
         return out
 
@@ -132,6 +131,7 @@ class AudioEffect:
     """
     AudioEffect - Classe qui stocke les valeurs des effets audios
     """
+
     reverb: float = 0.0
     distortion: float = 0.0
     chorus: float = 0.0
@@ -169,10 +169,10 @@ class AudioEngine:
 
     def load_sound(self, name: str, filepath: str):
         try:
-            with wave.open("assets/sounds/"+filepath, 'rb') as wf:
+            with wave.open("assets/sounds/" + filepath, "rb") as wf:
                 frames = wf.readframes(wf.getnframes())
                 audio = np.frombuffer(frames, dtype=np.int16).astype(np.float32)
-                audio /= 32768.0 # Normalisation de l'audio
+                audio /= 32768.0  # Normalisation de l'audio
 
                 if wf.getnchannels() == 1:
                     audio = np.stack([audio, audio])
@@ -195,11 +195,9 @@ class AudioEngine:
             return
 
         with self.lock:
-            self.playing_sounds.append({
-                'data': self.sounds[name] * volume,
-                'position': 0,
-                'loop': loop
-            })
+            self.playing_sounds.append(
+                {"data": self.sounds[name] * volume, "position": 0, "loop": loop}
+            )
 
     def stop_all(self):
         with self.lock:
@@ -213,21 +211,21 @@ class AudioEngine:
 
         with self.lock:
             for sound in self.playing_sounds[:]:
-                data = sound['data']
-                pos = sound['position']
+                data = sound["data"]
+                pos = sound["position"]
                 remain = data.shape[1] - pos
 
                 if remain <= 0:
-                    if sound['loop']:
-                        sound['position'] = 0
+                    if sound["loop"]:
+                        sound["position"] = 0
                         continue
                     else:
                         self.playing_sounds.remove(sound)
                         continue
 
                 to_copy = min(frames, remain)
-                mixed[:, :to_copy] += data[:, pos:pos + to_copy]
-                sound['position'] += to_copy
+                mixed[:, :to_copy] += data[:, pos : pos + to_copy]
+                sound["position"] += to_copy
 
         x = mixed
         x = self.distortion.process(x, self.effects.distortion)
@@ -248,7 +246,7 @@ class AudioEngine:
             samplerate=self.sample_rate,
             blocksize=self.block_size,
             channels=2,
-            callback=self.audio_callback
+            callback=self.audio_callback,
         )
         self.stream.start()
         self.logger.success("Audio engine successfully initialized")
@@ -292,7 +290,9 @@ class AudioEngine:
     def fade_lowpass(self, target: float, duration: float):
         def _fade():
             start = self.effects.lowpass
-            steps = int(duration * 60) # 60 étapes par secondes (Aucun rapport avec les FPS graphiques)
+            steps = int(
+                duration * 60
+            )  # 60 étapes par secondes (Aucun rapport avec les FPS graphiques)
             for i in range(steps):
                 t = i / steps
                 self.effects.lowpass = start + (target - start) * t

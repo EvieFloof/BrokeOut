@@ -1,5 +1,5 @@
-import random
 import math
+import random
 
 import pygame
 
@@ -168,7 +168,13 @@ class BrickGroup(Entity):
             for brick in range(len(level[line])):
                 if level[line][brick] != 0:
                     brick = level[line][brick](
-                        (((line % 2) * 13) + 51 + (brick * 53), 59 + (line * 33))
+                        (
+                            (self.game.config.graphics.render.width // 5 - 5)
+                            + ((line % 2) * 13)
+                            + 51
+                            + (brick * 53),
+                            59 + (line * 33),
+                        )
                     )
                     self.bricks.append(brick)
 
@@ -209,7 +215,13 @@ class BricksSkeleton(Entity):
             for brick in range(len(self.level[line])):
                 if self.level[line][brick] != 0:
                     brick = self.level[line][brick](
-                        (((line % 2) * 13) + 51 + (brick * 53), 59 + (line * 33))
+                        (
+                            (self.game.config.graphics.render.width // 5 - 5)
+                            + ((line % 2) * 13)
+                            + 51
+                            + (brick * 53),
+                            59 + (line * 33),
+                        )
                     )
                     self.bricks.append(brick)
 

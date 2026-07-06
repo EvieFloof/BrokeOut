@@ -27,7 +27,7 @@ class Renderer(Context):
 
         self.logger: Logger = Logger("systems.renderer")
 
-        self.shader_name: str = shader_name if self.game.config.debug.shaders else ""
+        self.shader_name = shader_name if self.game.config.debug.shaders else ""
         self.ctx = moderngl.create_context()
         self.ctx.gc_mode = "auto"
         self.start_time = time.time()
@@ -38,7 +38,7 @@ class Renderer(Context):
         self.last_warp: float = 0.0
 
         self.game.event_manager.subscribe(self, "KeyDown")
-    
+
     def KeyDown(self, event: pygame.Event):
         if event.key == pygame.K_f:
             self.game.isFullscreen = not self.game.isFullscreen

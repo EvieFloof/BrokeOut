@@ -4,10 +4,10 @@ core.engine - Classe principale du moteur BrokeEngine
 
 import pygame
 
-from core import context, error_handler, scene_manager, event_manager
+from core import context, error_handler, event_manager, scene_manager
 from systems import discord, logging
-from systems.config import config
 from systems.audio import AudioEngine
+from systems.config import config
 
 
 class Game:
@@ -20,7 +20,9 @@ class Game:
 
         self.logger = logging.Logger("core.engine")
 
-        self.logger.log("Version "+" ".join([self.config.release[i] for i in self.config.release])) # TODO: Make this more readable
+        self.logger.log(
+            "Version " + " ".join([self.config.release[i] for i in self.config.release])
+        )  # TODO: Make this more readable
 
         self.error_handler = (
             error_handler.ErrorHandler()
@@ -54,7 +56,7 @@ class Game:
 
         new_title: str = (
             "BrokeOut"
-            + f"{self.config.release.version} ({self.config.release.state})"
+            + f" {self.config.release.version} ({self.config.release.state}) : {self.config.release.compliant_name}"
             + (" - " if text != "" else "")
             + text
         )
@@ -74,7 +76,7 @@ class Game:
         """
 
         self.scene_manager.draw()
-    
+
     def set_pygame_window_mode(self, fullscreen: bool = False) -> None:
         if fullscreen:
             self.window = pygame.display.set_mode(

@@ -87,6 +87,18 @@ class SplashScene(Scene):
             size=36,
         )
 
+        if self.game.config.release.state == "EDGE":
+            rect = self.font.get_rect("UNSTABLE RELEASE", size=15)
+            rect.center = surface.get_rect().center
+            rect.centery = self.game.config.graphics.render.height - 51
+            self.font.render_to(
+                surface,
+                rect,
+                "UNSTABLE RELEASE",
+                (231, 219, 125),
+                size=15,
+            )
+
         self.game.window.blit(surface, (0, 0))
 
         self.shaders.render_frame()

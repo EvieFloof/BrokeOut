@@ -4,14 +4,14 @@ import numpy as np
 import pygame
 import pygame.freetype
 
+from assets.levels.levels import levels
 from core.scene_manager import Scene
-from systems import renderer
-from objects.gui import hint, mouse, button
-from objects.level import player, ball, brick
-from objects.level.stats import StatsElement, ProgressBar
 from effects import screen_shake
 from effects.gaussian_blur import gaussian_blur
-from assets.levels.levels import levels
+from objects.gui import button, hint, mouse
+from objects.level import ball, brick, player
+from objects.level.stats import ProgressBar, StatsElement
+from systems import renderer
 
 
 class LevelScene(Scene):
@@ -50,7 +50,7 @@ class LevelScene(Scene):
 
         self.pause: bool = False
 
-        self.game.audio_engine.load_sound("level_theme_0", "music/audio0.wav")
+        self.game.audio_engine.load_sound("level_theme_0", "music/audio0_extended.wav")
 
     def run(self) -> None:
         self.game.update_window_title("Classic Game")
@@ -101,7 +101,7 @@ class LevelScene(Scene):
                 self.toggle_pause,
             ),
             "Settings": button.Button(
-                (center[0] - 77, center[1] + 53), [151, 51], "Settings"
+                (center[0] - 77, center[1] + 53), [151, 51], "Settings", disabled=True
             ),
             "Quit Game": button.Button(
                 (center[0] + 77, center[1] + 53),
@@ -132,6 +132,22 @@ class LevelScene(Scene):
 
     def background_color(self) -> list:
         return [c // 3 for c in self.color]
+
+    def render_background(self, surface: pygame.Surface) -> None:
+        background = pygame.Surface(self.game.window.get_size(), pygame.SRCALPHA, 32)
+        for line in range(self.game.config.graphics.render.height // 45):
+            for column in range(self.game.config.graphics.render.width // 45):
+                pygame.draw.rect(
+                    background,
+                    (0, 0, 0, 25),
+                    (
+                        -25 + (column * 51),
+                        -40 + (line * 51) + (self._get_ticks() // 4) % 50,
+                        45,
+                        45,
+                    ),
+                )
+        surface.blit(background, (0, 0))
 
     def reset_game(self) -> None:
         self.screen_shake.start(10, 5)
@@ -232,12 +248,14 @@ class LevelScene(Scene):
 
         self.surface = pygame.Surface(self.game.window.get_size(), pygame.SRCALPHA)
 
+        [element.draw() for element in self.stats]
+
+        self.render_background(self.surface)
+
         self.skeleton.draw()
         self.brick_group.draw()
         self.player.draw()
         self.ball.draw()
-
-        [element.draw() for element in self.stats]
 
         self.game.window.blit(self.surface, self.offset)
 

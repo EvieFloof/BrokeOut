@@ -7,9 +7,9 @@ import pygame
 
 from core.scene_manager import Scene
 from effects import screen_shake
-from objects.gui import mouse, button, hint
+from objects.gui import button, hint, mouse
 from objects.menu import credits
-from systems import renderer, logging
+from systems import logging, renderer
 
 
 class MenuScene(Scene):
@@ -83,9 +83,10 @@ class MenuScene(Scene):
         )
         self.hint.show_hint("Connected to Discord", 120, 15)
 
-        self.gradient = pygame.image.load(
-            "assets/images/store/gradient0.png"
-        ).convert_alpha()
+        self.gradient = pygame.transform.scale(
+            pygame.image.load("assets/images/store/gradient0.png").convert_alpha(),
+            (self.game.config.graphics.render.width, 258),
+        )
         self.gradient_rect: tuple = self.gradient.get_rect()
 
         self.game.audio_engine.play_sound("menu_theme", True)
@@ -95,8 +96,8 @@ class MenuScene(Scene):
 
     def render_background(self, shake: list[int]) -> None:
         background = pygame.Surface(self.game.window.get_size(), pygame.SRCALPHA, 32)
-        for line in range(17):
-            for column in range(19):
+        for line in range(self.game.config.graphics.render.height // 45):
+            for column in range(self.game.config.graphics.render.width // 45):
                 pygame.draw.rect(
                     background,
                     (0, 0, 0, 25),
@@ -111,15 +112,23 @@ class MenuScene(Scene):
         self.game.window.blit(
             background,
             (
-                1 + ((self.mousex - 400) // 25) + shake[0],
-                1 + ((self.mousey - 300) // 20) + shake[1],
+                1
+                + ((self.mousex - (self.game.config.graphics.render.width // 2)) // 25)
+                + shake[0],
+                1
+                + ((self.mousey - (self.game.config.graphics.render.height // 2)) // 20)
+                + shake[1],
             ),
         )
         self.game.window.blit(
             background,
             (
-                1 + ((self.mousex - 400) // 20) + shake[0],
-                1 + ((self.mousey - 300) // 20) + shake[1],
+                1
+                + ((self.mousex - (self.game.config.graphics.render.width // 2)) // 20)
+                + shake[0],
+                1
+                + ((self.mousey - (self.game.config.graphics.render.height // 2)) // 20)
+                + shake[1],
             ),
         )
 
