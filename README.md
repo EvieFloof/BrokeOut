@@ -18,7 +18,7 @@
 
 ## 📖 About
 
-**BrokeOut** is a modern twist on the classic breakout arcade game, where your mission is simple:  
+**BrokeOut** is a modern twist on the classic breakout arcade game, where your mission is simple:
 💥 **Destroy everything in sight!**
 
 ---
@@ -46,24 +46,13 @@ uv run main.py
 
 ---
 
-## 🎮 How to Play
-
-* 🕹️ Move your paddle — Use **mouse**
-* 💣 Keep the ball in play — Don’t let it fall off the bottom
-* 💥 Break all the bricks — Destroy everything to advance
-* 🏆 Beat your high score — Challenge yourself every round
-
----
-
 ## 📸 Screenshots
 
 <div align="center">
 
-<img width="810" height="607" alt="image" src="https://github.com/user-attachments/assets/cf7ad36b-1425-4061-9ca7-7d603d3a1ead" />
-<p><i>Menu screen</i></p>
-
-<img width="815" height="610" alt="image" src="https://github.com/user-attachments/assets/0737ec63-b5ac-423e-8a8f-6eda1ffaadb7" />
-<p><i>The actual game</i></p>
+<img width="1330" height="807" alt="Screenshot From 2026-07-06 13-14-40" src="https://github.com/user-attachments/assets/0130caa9-110c-4b9f-a436-01a3d2f1263f" />
+<img width="1330" height="807" alt="Screenshot From 2026-07-06 13-14-56" src="https://github.com/user-attachments/assets/a1affdb2-2486-4a65-98eb-e5449ce969a5" />
+<img width="1330" height="807" alt="Screenshot From 2026-07-06 13-15-52" src="https://github.com/user-attachments/assets/8703faa8-83f6-4063-8eac-572e5f41547a" />
 
 </div>
 
@@ -73,10 +62,9 @@ uv run main.py
 
 | Name                                               | Role                 |
 |----------------------------------------------------|----------------------|
-| [@EvieFloof](https://github.com/EvieFloof)               | Lead Developer       |
+| [@EvieFloof](https://github.com/EvieFloof)         | Lead Developer       |
 | [@titwix](https://github.com/titwix)               | Developer            |
-| Eliot Hartel                                       | Developer            |
-| [@yamikocrystal](https://github.com/yamikocrystal) | The Cute Fox Drawing |
+| [@yamikocrystal](https://github.com/yamikocrystal) | Easter-Egg Artist    |
 
 ---
 
@@ -84,7 +72,7 @@ uv run main.py
 
 <details>
 <summary><b>What's the current state of the game ?</b></summary>
-The core mechanics works well, we now need to add the actual ne wgameplay features to the game
+The core mechanics works well, we now need to add the actual new ameplay features to the game
 </details>
 
 <details>
