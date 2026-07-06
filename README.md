@@ -72,7 +72,7 @@ uv run main.py
 
 <details>
 <summary><b>What's the current state of the game ?</b></summary>
-The core mechanics works well, we now need to add the actual new ameplay features to the game
+The core mechanics works well, we now need to add the actual new gameplay features to the game
 </details>
 
 <details>
