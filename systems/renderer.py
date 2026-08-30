@@ -1,7 +1,7 @@
 """
 systems.renderer - Moteur de rendu de BrokeEngine
 
-EwoFluffy - BrokeTeam - 2025
+EwoFluffy - BrokeTeam - 2026
 """
 
 import time

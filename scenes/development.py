@@ -2,17 +2,17 @@ import pygame
 import pygame.freetype
 
 from core.scene_manager import Scene
-from systems import renderer
 from objects.gui import mouse
 
 
 class DevelopmentScene(Scene):
     # noinspection PyDefaultArgument
     def __init__(self) -> None:
-        self.color = (159, 0, 0)
-        self.shaders = renderer.Renderer()
-
         super().__init__()
+
+        self.color = (159, 0, 0)
+        self.shaders = self.game.renderer
+
 
     def run(self) -> None:
         self.mouse = mouse.Mouse()
@@ -26,11 +26,18 @@ class DevelopmentScene(Scene):
         pass
 
     def draw(self) -> None:
-        self.game.window.fill(self.color)
 
         surface = pygame.Surface(self.game.window.get_size(), pygame.SRCALPHA)
 
-        self.mouse.draw()
+        pygame.draw.rect(
+                    surface,
+                    (0, 0, 0, 255),
+                    (
+                        100, 100,
+                        45,
+                        45,
+                    ),
+                )
 
         self.game.window.blit(surface, (0, 0))
 

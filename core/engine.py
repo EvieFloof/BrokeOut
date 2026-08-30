@@ -2,10 +2,12 @@
 core.engine - Classe principale du moteur BrokeEngine
 """
 
+import os
+
 import pygame
 
 from core import context, error_handler, event_manager, scene_manager
-from systems import discord, logging
+from systems import discord, logging, renderer
 from systems.audio import AudioEngine
 from systems.config import config
 
@@ -94,6 +96,9 @@ class Game:
         run - Fonction d'exécution du moteur de jeu
         """
 
+
+        self.logger.log(f"Current platform : {os.name}")
+
         self.logger.log("Initialising Pygame window")
         pygame.init()
         self.audio_engine.start()
@@ -103,6 +108,8 @@ class Game:
         self.update_window_title()
 
         pygame.mouse.set_visible(False)
+
+        self.renderer = renderer.Renderer()
 
         self.clock = pygame.time.Clock()
 

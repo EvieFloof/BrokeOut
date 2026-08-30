@@ -72,6 +72,6 @@ engine:
   log_level: 4
 
 release:
-  version: "0.2"
+  version: "0.2.5"
   state: "EDGE"
-  compliant_name: "Summer Update (INDEV)"
+  compliant_name: "Winter Update (INDEV)"

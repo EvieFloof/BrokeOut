@@ -1,7 +1,7 @@
 """
 systems.config - code de connection au fichier de configuration
 
-EwoFluffy - BrokeTeam - 2025
+EwoFluffy - BrokeTeam - 2026
 """
 
 from munch import munchify

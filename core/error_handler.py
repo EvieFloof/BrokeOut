@@ -1,7 +1,7 @@
 """
 core.error_handler - Gestion des erreurs intégrée avec le module systems.logging
 
-EwoFluffy - BrokeTeam - 2025
+EwoFluffy - BrokeTeam - 2026
 """
 
 import sys

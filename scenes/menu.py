@@ -8,7 +8,7 @@ import pygame
 from core.scene_manager import Scene
 from effects import screen_shake
 from objects.gui import button, hint, mouse
-from objects.menu import credits
+from objects.menu import credits, logo
 from systems import logging, renderer
 
 
@@ -20,23 +20,20 @@ class MenuScene(Scene):
         self.color: list[int] = [246, 172, 201]
 
         self.font = pygame.freetype.Font("assets/fonts/Monocraft.ttf", 36)
-        self.text: str = "Broke Out"
 
         self.shake = screen_shake.ScreenShake()
-
-        self.titley: int = self.game.config.graphics.render.height // 2
-        self.titlesize: int = 36
 
         self.credits: bool = False
 
         self.game.audio_engine.load_sound("menu_theme", "music/audio_menu.wav")
 
+        self.renderer = self.game.renderer
+        self.renderer.change_shader("crt")
+
     def run(self) -> None:
         self.game.update_window_title("Main Menu")
 
         self.game.event_manager.subscribe(self, "KeyDown")
-
-        self.shaders = renderer.Renderer("crt")
 
         self.mouse = mouse.Mouse()
 
@@ -45,6 +42,8 @@ class MenuScene(Scene):
         self.hint = hint.HintElement()
 
         self.credits_object = credits.Credits()
+
+        self.Logo = logo.LogoElement()
 
         center: tuple[int] = self.game.window.get_rect().center
 
@@ -58,11 +57,11 @@ class MenuScene(Scene):
                 "Credits",
                 self.CreditsButtonClick,
             ),
-            "Web": button.Button(
+            "Mods": button.Button(
                 (center[0] + 79, center[1] + 59),
                 [151, 51],
-                "Website",
-                self.WebsiteButtonClick,
+                "Mods",
+                None,
             ),
             "Quit": button.Button(
                 (center[0], center[1] + 118), [193, 51], "Quit", self.Quit
@@ -83,13 +82,8 @@ class MenuScene(Scene):
         )
         self.hint.show_hint("Connected to Discord", 120, 15)
 
-        self.gradient = pygame.transform.scale(
-            pygame.image.load("assets/images/store/gradient0.png").convert_alpha(),
-            (self.game.config.graphics.render.width, 258),
-        )
-        self.gradient_rect: tuple = self.gradient.get_rect()
-
         self.game.audio_engine.play_sound("menu_theme", True)
+
 
     def Quit(self) -> None:
         self.game.running = False
@@ -142,10 +136,6 @@ class MenuScene(Scene):
         self.logger.log(f"Switching to credits with easter egg = {self.egg}")
         self.credits = True
 
-    def WebsiteButtonClick(self) -> None:
-        self.logger.log("Opening website in user's default browser")
-        webbrowser.open("https://nowewo.github.io/BrokeOut/")
-
     def KeyDown(self, event: pygame.Event) -> None:
         if event.key == pygame.K_ESCAPE and self.credits:
             self.logger.log("Disabling credits")
@@ -163,14 +153,9 @@ class MenuScene(Scene):
 
     def update(self) -> None:
         if self._get_ticks() % 26 == 0 and self.game.config.debug.shaders:
-            self.shaders.set_curvature(0.4)
+            self.renderer.set_curvature(0.4)
 
-        if self.text_rect is not None:
-            if self.text_rect.center[1] > 100:
-                self.titley += (100 - self.titley) * 0.1
-
-        if self.titlesize < 50:
-            self.titlesize += (51 - self.titlesize) * 0.1
+        self.Logo.update()
 
         if self.game.config.debug.offset:
             self.compute_surface_offset()
@@ -198,19 +183,6 @@ class MenuScene(Scene):
                 for element in self.menu_buttons
             ]
 
-            self.text_rect = self.font.get_rect(f"Version {version} • {name}", size=19)
-
-            self.text_rect.center = (
-                self.surface.get_rect().center[0],
-                self.titley + 51,
-            )
-            self.font.render_to(
-                self.surface,
-                self.text_rect,
-                f"Version {version} • {name}",
-                (206, 114, 150),
-                size=19,
-            )
         else:
             # Credits surface
             self.credits_object.draw(self)
@@ -220,24 +192,12 @@ class MenuScene(Scene):
                 (0, 0, self.game.config.graphics.render.width, 131),
             )
 
-        # Title element ("Broke Out")
-        self.text_rect = self.font.get_rect(self.text, size=self.titlesize)
-
-        self.text_rect.center = (self.surface.get_rect().center[0], self.titley + 5)
-        self.font.render_to(
-            self.surface, self.text_rect, self.text, (173, 95, 125), size=self.titlesize
-        )
-
-        self.text_rect.center = (self.surface.get_rect().center[0], self.titley)
-        self.font.render_to(
-            self.surface, self.text_rect, self.text, self.color, size=self.titlesize
-        )
+        # Logo
+        self.Logo.draw(self.surface)
 
         self.hint.draw()
 
         self.render_background(shake)
-
-        self.game.window.blit(self.gradient, (0, 0))
 
         self.game.window.blit(
             self.surface,
@@ -249,4 +209,4 @@ class MenuScene(Scene):
 
         self.mouse.draw()
 
-        self.shaders.render_frame()
+        self.renderer.render_frame()

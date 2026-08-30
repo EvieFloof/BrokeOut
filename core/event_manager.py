@@ -1,7 +1,7 @@
 """
 core.event_manager - Gestionnaire d'évènements de BrokeEngine
 
-EwoFluffy - BrokeTeam - 2025
+EwoFluffy - BrokeTeam - 2026
 """
 
 from typing import TYPE_CHECKING

@@ -1,7 +1,7 @@
 """
 systems.discord - module de l'intégration à Discord
 
-EwoFluffy - BrokeTeam - 2025
+EwoFluffy - BrokeTeam - 2026
 """
 
 import discordrpc

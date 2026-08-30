@@ -13,7 +13,8 @@ class SplashScene(Scene):
         super().__init__()
         self.color: list[int] = [0, 0, 0]
 
-        self.shaders = renderer.Renderer()
+        self.renderer = self.game.renderer
+
         self.fadeout: int = 0
         self.text_opacity: int = 0
 
@@ -101,4 +102,4 @@ class SplashScene(Scene):
 
         self.game.window.blit(surface, (0, 0))
 
-        self.shaders.render_frame()
+        self.renderer.render_frame()

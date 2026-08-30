@@ -22,8 +22,7 @@ class Brick(Entity):
         self.text: str = ""
 
         # Random color variation
-        divisor: int = random.randint(2, 5)
-        self.color: list = [c // (divisor // 2) for c in self.scene.color]
+        self.divisor: int = random.randint(2, 5)
 
     def is_alive(self) -> bool:
         """Check if brick is still alive (This was a trial, I'm making a note here: Huge success)"""
@@ -55,11 +54,11 @@ class Brick(Entity):
 
     def draw(self) -> None:
         """Draw the brick"""
-        pygame.draw.rect(self.scene.surface, self.color, self.get_rect(), 0)
+        pygame.draw.rect(self.scene.surface, [c // (self.divisor // 2) for c in self.scene.color], self.get_rect(), 0)
         self.draw_text()
 
     def draw_skeleton(self) -> None:
-        pygame.draw.rect(self.scene.surface, self.color + [25], self.get_rect(True), 0)
+        pygame.draw.rect(self.scene.surface, [c // (self.divisor // 2) for c in self.scene.color] + [15], self.get_rect(True), 0)
 
     def handle_hit(self) -> None:
         self.life -= 1
@@ -103,7 +102,7 @@ class Brick(Entity):
             self.handle_hit()
 
             self.scene.screen_shake.start(duration=3, magnitude=3)
-            self.scene.shaders.set_curvature(0.41)
+            self.scene.renderer.set_curvature(0.41)
 
             return True
 
@@ -129,6 +128,28 @@ class LargeBrick(Brick):
             self.scene.surface, text_rect, "<->", self.scene.background_color(), size=16
         )
 
+class RandomBrick(Brick):
+    def __init__(self, pos: list | tuple) -> None:
+        super().__init__(pos)
+
+    def handle_hit(self) -> None:
+        self.scene.color = [random.randint(150, 255) for _ in range(3)]
+        self.scene.screen_shake.start(10, 5)
+        self.life = -1
+
+    def draw_text(self) -> None:
+        text_rect = self.scene.font.get_rect("?", size=16)
+        text_rect.center = self.pos
+
+        self.scene.font.render_to(
+            self.scene.surface, text_rect, "?", self.scene.background_color(), size=16
+        )
+    
+    def draw(self) -> None:
+        """Draw the brick"""
+        rect = self.get_rect()
+        pygame.draw.rect(self.scene.surface, [c // (self.divisor // 2) for c in self.scene.color], (rect[0] + random.randint(-1,1), rect[1] + random.randint(-1,1), rect[2], rect[3]), 0)
+        self.draw_text()
 
 class FastBrick(Brick):
     def __init__(self, pos: list | tuple) -> None:
@@ -162,12 +183,25 @@ class BrickGroup(Entity):
     def generate_bricks(self) -> None:
         """Generate brick layout"""
         self.bricks = []
-        level = self.scene.levels[(self.scene.level - 1) % len(self.scene.levels)]
-        self.logger.log(f"{level=}", "group_verbose")
-        for line in range(len(level)):
-            for brick in range(len(level[line])):
-                if level[line][brick] != 0:
-                    brick = level[line][brick](
+        # level = self.scene.levels[(self.scene.level - 1) % len(self.scene.levels)]
+        # self.logger.log(f"{level=}", "group_verbose")
+        # for line in range(len(level)):
+        #     for brick in range(len(level[line])):
+        #         if level[line][brick] != 0:
+        #             brick = level[line][brick](
+        #                 (
+        #                     (self.game.config.graphics.render.width // 5 - 5)
+        #                     + ((line % 2) * 13)
+        #                     + 51
+        #                     + (brick * 53),
+        #                     59 + (line * 33),
+        #                 )
+        #             )
+        #             self.bricks.append(brick)
+        for line in range(7):
+            for brick in range(14):
+                if random.randint(0, self.scene.level) != 0:
+                    brick = (random.choice([LargeBrick, FastBrick, RandomBrick]) if random.randint(0, self.scene.level) == 0 else Brick)(
                         (
                             (self.game.config.graphics.render.width // 5 - 5)
                             + ((line % 2) * 13)

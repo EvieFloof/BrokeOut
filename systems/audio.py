@@ -1,7 +1,7 @@
 """
 audio - Moteur audio de BrokeEngine
 
-EwoFluffy - BrokeTeam - 2025
+EwoFluffy - BrokeTeam - 2026
 """
 
 import threading

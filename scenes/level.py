@@ -11,7 +11,7 @@ from effects.gaussian_blur import gaussian_blur
 from objects.gui import button, hint, mouse
 from objects.level import ball, brick, player
 from objects.level.stats import ProgressBar, StatsElement
-from systems import renderer
+from objects.menu import logo
 
 
 class LevelScene(Scene):
@@ -48,11 +48,16 @@ class LevelScene(Scene):
 
         self.blur_radius: int = 0
 
-        self.pause: bool = False
-
         self.game.audio_engine.load_sound("level_theme_0", "music/audio0_extended.wav")
 
+        self.backspeed = 4
+
+        self.renderer = self.game.renderer
+
     def run(self) -> None:
+        self.pause: bool = False
+        self.renderer.update_values = True
+
         self.game.update_window_title("Classic Game")
 
         self.game.event_manager.subscribe(self, "MouseButtonDown")
@@ -67,7 +72,7 @@ class LevelScene(Scene):
 
         self.stats = [StatsElement(), ProgressBar(), hint.HintElement()]
 
-        self.shaders = renderer.Renderer("crt")
+        self.logo = logo.LogoElement()
 
         pygame.mouse.set_visible(False)
 
@@ -142,7 +147,7 @@ class LevelScene(Scene):
                     (0, 0, 0, 25),
                     (
                         -25 + (column * 51),
-                        -40 + (line * 51) + (self._get_ticks() // 4) % 50,
+                        -40 + (line * 51) + (self._get_ticks() // self.backspeed) % 50,
                         45,
                         45,
                     ),
@@ -206,8 +211,8 @@ class LevelScene(Scene):
         self.game.audio_engine.fade_lowpass(250 if self.pause else 50_000, 0.5)
         for button_element in self.pause_buttons:
             self.pause_buttons[button_element].set_event_state(self.pause)
-        self.shaders.update_values = not self.shaders.update_values
-        self.shaders.set_curvature(0)
+        self.renderer.update_values = not self.renderer.update_values
+        self.renderer.set_curvature(0)
 
     def MouseButtonDown(self, event: pygame.Event) -> None:
         if event.button == 1 and self.ball.on_player and not self.pause:
@@ -226,6 +231,14 @@ class LevelScene(Scene):
         if event.key == pygame.K_SPACE:
             self.trigger_next_level()
 
+    def compute_surface_offset(self) -> None:
+        if pygame.mouse.get_focused():
+            self.mousex, self.mousey = pygame.mouse.get_pos()
+        else:
+            center_x, center_y = self.game.window.get_rect().center
+            self.mousex += (center_x - self.mousex) * 0.1
+            self.mousey += (center_y - self.mousey) * 0.1
+
     def update(self) -> None:
         # self.color = [random.randint(150,255) for i in range(3)]
 
@@ -240,6 +253,7 @@ class LevelScene(Scene):
         else:
             for i in self.pause_buttons:
                 self.pause_buttons[i].update()
+            self.logo.update()
 
     def draw(self) -> None:
         self.offset = self.screen_shake.get_offset()
@@ -248,28 +262,40 @@ class LevelScene(Scene):
 
         self.surface = pygame.Surface(self.game.window.get_size(), pygame.SRCALPHA)
 
-        [element.draw() for element in self.stats]
-
         self.render_background(self.surface)
+
 
         self.skeleton.draw()
         self.brick_group.draw()
         self.player.draw()
         self.ball.draw()
 
-        self.game.window.blit(self.surface, self.offset)
+        [element.draw() for element in self.stats]
+        
+        if not self.pause:
+            self.game.window.blit(self.surface, self.offset)
 
         if self.pause:
+            self.compute_surface_offset()
+
             pause_surface = pygame.Surface(self.game.window.get_size(), pygame.SRCALPHA)
+
+            self.game.window.blit(self.surface, (1 + ((self.mousex - 400) // 50),
+                1 + ((self.mousey - 300) // 50)))
 
             self.game.window = gaussian_blur(self.game.window, self.blur_radius)
 
+            self.logo.draw(pause_surface)
+
             # Menu pause code
             for i in self.pause_buttons:
-                self.pause_buttons[i].draw(pause_surface)
+                self.pause_buttons[i].draw(pause_surface, [c // 2 for c in self.color], self.color)
 
-            self.game.window.blit(pause_surface)
+            self.game.window.blit(pause_surface,
+            (1 + ((self.mousex - 400) // 30),
+                1 + ((self.mousey - 300) // 30)))
 
             mouse.Mouse().draw()
 
-        self.shaders.render_frame()
+
+        self.renderer.render_frame()

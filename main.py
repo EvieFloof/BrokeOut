@@ -1,7 +1,7 @@
 """
 main - Entry point of the engine
 
-EwoFluffy - BrokeTeam - 2025
+EwoFluffy - BrokeTeam - 2026
 """
 
 from core.engine import Game

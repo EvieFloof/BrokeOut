@@ -1,7 +1,7 @@
 """
 core.context - Passer simplement l'objet du jeu à n'importe quel élément
 
-EwoFluffy - BrokeTeam - 2025
+EwoFluffy - BrokeTeam - 2026
 """
 
 

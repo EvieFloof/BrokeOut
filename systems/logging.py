@@ -1,7 +1,7 @@
 """
 systems.logging - module de gestion des logs
 
-EwoFluffy - BrokeTeam - 2025
+EwoFluffy - BrokeTeam - 2026
 """
 
 from datetime import datetime
