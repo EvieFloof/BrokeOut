@@ -11,7 +11,6 @@ from systems import discord, logging, renderer
 from systems.audio import AudioEngine
 from systems.config import config
 
-
 class Game:
     """
     Game - Classe principale du moteur
@@ -43,6 +42,11 @@ class Game:
         self.running = True
 
         self.isFullscreen = False
+
+        self.fixed_dt = 1.0 / self.config.graphics.tps
+    
+    def change_fixed_dt(self, dt):
+        self.fixed_dt = 1.0 / dt
 
     def handle_events(self) -> bool:
         """
@@ -96,7 +100,6 @@ class Game:
         run - Fonction d'exécution du moteur de jeu
         """
 
-
         self.logger.log(f"Current platform : {os.name}")
 
         self.logger.log("Initialising Pygame window")
@@ -112,6 +115,7 @@ class Game:
         self.renderer = renderer.Renderer()
 
         self.clock = pygame.time.Clock()
+        self._accumulator = 0.0
 
         if self.config.debug.startup.scene != "default":
             self.active_scene = self.scene_manager.set_active_scene(
@@ -123,11 +127,18 @@ class Game:
         self.logger.success("Changed current active scene")
 
         while self.running:
+            frame_time = self.clock.tick(self.config.graphics.fps) / 1000.0
+            frame_time = min(frame_time, 0.25)
+
             self.handle_events()
-            self.update()
+
+            self._accumulator += frame_time
+            while self._accumulator >= self.fixed_dt:
+                self.update()
+                self._accumulator -= self.fixed_dt
+
             self.draw()
             pygame.display.flip()
-            self.clock.tick(self.config.graphics.fps)
 
         self.audio_engine.stop()
         pygame.quit()

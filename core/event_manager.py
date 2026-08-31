@@ -32,7 +32,7 @@ class EventManager:
         if event not in self.listeners:
             self.listeners[event] = []
         self.listeners[event].append(listener)
-        self.logger.log(f"New subscription from {listener} to event {event}")
+        self.logger.log(f"New subscription from {listener} to event {event}", "subscriptions")
         self.logger.log(str(self.listeners), "verbose")
 
     def unsubscribe(self, listener, event: str) -> None:
@@ -48,7 +48,7 @@ class EventManager:
 
         self.listeners[event].remove(listener)
 
-        self.logger.log(f"subscription from {listener} to removed")
+        self.logger.log(f"subscription from {listener} to removed", "subscriptions")
         self.logger.log(str(self.listeners), "verbose")
 
     def send_event(self, event: str) -> None:
@@ -60,7 +60,7 @@ class EventManager:
             return
         for entity in self.listeners[event]:
             getattr(entity, event)()
-            self.logger.log(f"Sent event {event} to object {entity}")
+            self.logger.log(f"Sent event {event} to object {entity}", "events")
 
     def handle_events(self) -> bool:
         """
@@ -72,7 +72,7 @@ class EventManager:
             self.logger.log(event_name, "event_name")
             if event_name in self.listeners.keys():
                 for i in self.listeners[event_name]:
-                    self.logger.log(f"Sent event {event} to object {i}")
+                    self.logger.log(f"Sent event {event} to object {i}", "events")
                     getattr(i, event_name)(event)
         return True
 
@@ -80,5 +80,7 @@ class EventManager:
         """
         reset - supprimer toutes les entrées d'évènements
         """
+
+        self.logger.log("Unregistered all listeners")
 
         self.listeners = {}

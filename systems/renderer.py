@@ -179,9 +179,10 @@ class Renderer(Context):
             current_time = time.time() - self.start_time
             self.prog["iTime"].value = current_time
 
+        # FIXME
         if self.has_warp and self.update_values:
             current_warp = self.prog["warp"].value
-            if current_warp < 0.5:
+            if current_warp < 0.5: # <- Arbitrary value, we want this to be dynamic
                 new_warp = current_warp + (0.5 - current_warp) * 0.05
                 self.prog["warp"].value = new_warp
                 self.last_warp = new_warp

@@ -212,7 +212,7 @@ class LevelScene(Scene):
         for button_element in self.pause_buttons:
             self.pause_buttons[button_element].set_event_state(self.pause)
         self.renderer.update_values = not self.renderer.update_values
-        self.renderer.set_curvature(0)
+        # self.renderer.set_curvature(0.25)
 
     def MouseButtonDown(self, event: pygame.Event) -> None:
         if event.button == 1 and self.ball.on_player and not self.pause:
@@ -242,8 +242,8 @@ class LevelScene(Scene):
     def update(self) -> None:
         # self.color = [random.randint(150,255) for i in range(3)]
 
-        if self.blur_radius < 10 and self.pause:
-            self.blur_radius += (10 - self.blur_radius) * 0.3
+        if self.blur_radius < 5 and self.pause:
+            self.blur_radius += (5 - self.blur_radius) * 0.05
 
         if not self.pause:
             [i.update() for i in self.stats]

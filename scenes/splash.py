@@ -29,33 +29,32 @@ class SplashScene(Scene):
 
     def run(self) -> None:
         self.game.event_manager.subscribe(self, "KeyDown")
+        (self
+        .at(60, lambda: self.register_update(self._intro_sequence))
+        .at(60, lambda: setattr(self, "animation_state", True))
+        .at(120, lambda: self.remove_update(self._intro_sequence))
+        .at(120, lambda: setattr(self, "text", "Powered by BrokeEngine"))
+        .at(180, lambda: setattr(self, "text", "© 2025-2026"))
+        .at(230, lambda: self.register_update(self._outro_sequence))
+        .at(270, lambda: self.game.scene_manager.set_active_scene("menu"))
+        )
+    
+    def _intro_sequence(self):
+        self.text_opacity += (255 - self.text_opacity) * 0.1
+        if not self.song_played:
+            self.text = "Made with love by Broke Team"
+            self.song_played = True
+            self.game.audio_engine.play_sound("splash_sound")
+
+    def _outro_sequence(self):
+        self.fadeout += (255 - self.fadeout) * 0.03
+        self.text_color = [255, 153, 191]
+        indice = (self._get_ticks() - 230) // 4
+        self.text = "Broke Out"[0 : int(indice)]
 
     def KeyDown(self, event: pygame.Event) -> None:
         if event.key == pygame.K_SPACE:
             self.game.scene_manager.set_active_scene("menu")
-
-    def update(self) -> None:
-        if self.text_opacity < 255 and self.animation_state:
-            self.text_opacity += (255 - self.text_opacity) * 0.1
-            if not self.song_played:
-                self.text = "Made with love by Broke Team"
-                self.song_played = True
-                self.game.audio_engine.play_sound("splash_sound")
-        if self._get_ticks() == 60:
-            self.animation_state = True
-        elif self._get_ticks() == 120:
-            self.text = "Powered by BrokeEngine"
-        elif self._get_ticks() == 180:
-            self.text = "© 2025-2026"
-        elif self._get_ticks() == 230:
-            self.text_opacity = 0
-        elif self._get_ticks() == 270:
-            self.game.scene_manager.set_active_scene("menu")
-        if self._get_ticks() > 230:
-            self.fadeout += (255 - self.fadeout) * 0.03
-            self.text_color = [255, 153, 191]
-            indice = (self._get_ticks() - 230) // 4
-            self.text = "Broke Out"[0 : int(indice)]
 
     def draw(self) -> None:
         self.game.window.fill(self.color)

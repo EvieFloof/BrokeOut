@@ -9,9 +9,8 @@ graphics:
     width: 1280
     height: 720
 
-  fps:
-    60 # WARNING: This change the speed of execution of certain game elements
-    # TODO: Fix the game to support variable refresh rate
+  fps: 60
+  tps: 60
 
   shake: # Shaders effects configuration
     magnitude: 5
@@ -62,16 +61,18 @@ debug:
 
   logs:
     special.all: true
+
+    objects.brick.brickgroup.group_verbose: false
     core.event_manager.event_name: false
     core.event_manager.verbose: false
+    core.event_manager.events: false
     systems.renderer: false
-    objects.brick.brickgroup.group_verbose: false
 
 engine:
   # -1: No logs | 0: Highlight | 1: Critical | 2: Error | 3: Warn | 4: Infos, Success
   log_level: 4
 
 release:
-  version: "0.2.5"
-  state: "EDGE"
-  compliant_name: "Winter Update (INDEV)"
+  version: "0.2.6-rc1"
+  state: "STABLE"
+  compliant_name: "Winter Update (Release Candidate)"

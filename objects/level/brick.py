@@ -128,6 +128,23 @@ class LargeBrick(Brick):
             self.scene.surface, text_rect, "<->", self.scene.background_color(), size=16
         )
 
+class DTBrick(Brick):
+    def __init__(self, pos: list | tuple) -> None:
+        super().__init__(pos)
+
+    def handle_hit(self) -> None:
+        self.game.change_fixed_dt(150)
+        self.scene.after(150*3, lambda: self.game.change_fixed_dt(self.game.config.graphics.tps))
+        self.life = -1
+
+    def draw_text(self) -> None:
+        text_rect = self.scene.font.get_rect("2.5x", size=16)
+        text_rect.center = self.pos
+
+        self.scene.font.render_to(
+            self.scene.surface, text_rect, "2.5x", self.scene.background_color(), size=16
+        )
+
 class RandomBrick(Brick):
     def __init__(self, pos: list | tuple) -> None:
         super().__init__(pos)
@@ -201,7 +218,7 @@ class BrickGroup(Entity):
         for line in range(7):
             for brick in range(14):
                 if random.randint(0, self.scene.level) != 0:
-                    brick = (random.choice([LargeBrick, FastBrick, RandomBrick]) if random.randint(0, self.scene.level) == 0 else Brick)(
+                    brick = (random.choice([LargeBrick, FastBrick, DTBrick, RandomBrick]) if random.randint(0, self.scene.level) == 0 else Brick)(
                         (
                             (self.game.config.graphics.render.width // 5 - 5)
                             + ((line % 2) * 13)
