@@ -63,7 +63,7 @@ uv run main.py
 | Name                                               | Role                 |
 |----------------------------------------------------|----------------------|
 | [@EvieFloof](https://github.com/EvieFloof)         | Lead Developer       |
-| [@titwix](https://github.com/titwix)               | Developer            |
+| @titwix                                            | Developer            |
 | [@yamikocrystal](https://github.com/yamikocrystal) | Easter-Egg Artist    |
 
 ---
